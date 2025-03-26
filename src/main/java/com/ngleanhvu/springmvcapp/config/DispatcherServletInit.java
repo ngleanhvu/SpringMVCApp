@@ -4,8 +4,12 @@
  */
 package com.ngleanhvu.springmvcapp.config;
 
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletRegistration;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 /**
  *
@@ -17,7 +21,8 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] {
             ThymeleafConfig.class,
-            HibernateConfig.class
+            HibernateConfig.class,
+            SpringSecurityConfig.class
         };
     }
 
@@ -31,5 +36,19 @@ public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherSer
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        // Cấu hình upload file
+        MultipartConfigElement multipartConfigElement = new MultipartConfigElement(
+                "/tmp",   // Thư mục lưu file tạm
+                5 * 1024 * 1024,  // Kích thước file tối đa (5MB)
+                20 * 1024 * 1024, // Tổng kích thước request tối đa (20MB)
+                0  // Ngưỡng lưu trên RAM trước khi ghi ra ổ cứng
+        );
+
+        registration.setMultipartConfig(multipartConfigElement);
     }
 }

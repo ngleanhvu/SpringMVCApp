@@ -17,10 +17,12 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.Date;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 /**
  *

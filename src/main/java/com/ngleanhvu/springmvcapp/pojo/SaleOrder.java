@@ -4,6 +4,7 @@
  */
 package com.ngleanhvu.springmvcapp.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,10 +20,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -51,6 +53,7 @@ public class SaleOrder implements Serializable {
     @ManyToOne
     private User user;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "saleOrder")
+    @JsonIgnore
     private Set<OrderDetail> orderDetails;
 
     public SaleOrder() {

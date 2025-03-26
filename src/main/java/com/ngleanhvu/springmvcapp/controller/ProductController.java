@@ -2,12 +2,12 @@ package com.ngleanhvu.springmvcapp.controller;
 
 import com.ngleanhvu.springmvcapp.pojo.Product;
 import com.ngleanhvu.springmvcapp.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ProductController {
@@ -20,10 +20,23 @@ public class ProductController {
         return "products";
     }
 
-    @PostMapping("/add")
-    public String addProduct(@ModelAttribute(value = "product") Product p) {
-        this.prodSer.saveOrUpdate(p);
-
-        return "redirect:/";
+    @GetMapping("/products/{productId}")
+    public String updateProduct(@PathVariable("productId") int productId,
+                                Model model) {
+        model.addAttribute("product", this.prodSer.getProductById(productId));
+        return "products";
     }
+
+    @PostMapping("/products")
+    public String addProduct(@Valid @ModelAttribute(value = "product") Product p,
+                             BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            if(this.prodSer.saveOrUpdate(p) != null) {
+                return "redirect:/";
+            }
+        }
+        return "products";
+    }
+
+
 }

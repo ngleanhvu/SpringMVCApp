@@ -1,9 +1,9 @@
-
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Quản lý sản phẩm</title>
   <th:block th:replace="base :: styles"></th:block>
+  <script th:src="@{/js/admin/product.js}" defer></script>
 </head>
 <body>
 <div th:replace="base :: header"></div>
@@ -11,23 +11,34 @@
 <section class="container">
   <h1 class="text-center text-info mt-1">QUẢN LÝ SẢN PHẨM</h1>
 
-  <form method="post" th:action="@{/add}" th:object="${product}">
+  <form method="post" th:action="@{/products}" th:object="${product}" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{image}">
     <div class="form-floating mb-3 mt-3">
       <input type="text" class="form-control" th:field="*{name}" id="name" placeholder="Tên sản phẩm">
       <label for="name">Tên sản phẩm</label>
+      <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
     </div>
     <div class="form-floating mb-3 mt-3">
-      <input type="text" class="form-control" th:field="*{price}" id="price" placeholder="Gía sản phẩm">
-      <label for="price">Gía sản phẩm</label>
+      <input type="text" class="form-control" th:field="*{price}" id="price" placeholder="Giá sản phẩm">
+      <label for="price">Giá sản phẩm</label>
+      <small class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
     </div>
     <div class="form-floating">
-      <select class="form-select" id="category" th:field="*{categoryId}">
-        <option th:each="c: ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+      <select class="form-select" id="category" th:field="*{category}">
+        <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"
+                th:selected="${product != null and product.category != null and c.id == product.category.id}">
+        </option>
       </select>
       <label for="category" class="form-label">Danh mục:</label>
     </div>
+    <div class="form-floating mb-3 mt-3">
+      <input type="file" class="form-control" name="file" id="file">
+      <label for="file">Ảnh sản phẩm</label>
+    </div>
     <div class="form-floating mt-1">
-      <button class="btn btn-success">Thêm sản phẩm</button>
+      <button class="btn btn-success" th:if="${product.id == null}">Thêm sản phẩm</button>
+      <button class="btn btn-success" th:if="${product.id != null}">Cập nhật sản phẩm</button>
     </div>
   </form>
 </section>

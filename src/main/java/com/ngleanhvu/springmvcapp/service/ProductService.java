@@ -9,4 +9,6 @@ public interface ProductService {
     List<Product> getProducts(Map<String, String> params);
     Product saveOrUpdate(Product p);
     Product getProductById(int id);
+    int countProducts();
+    void deleteProductById(int id);
 }

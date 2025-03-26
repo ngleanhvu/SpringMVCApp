@@ -4,21 +4,13 @@
  */
 package com.ngleanhvu.springmvcapp.pojo;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -47,6 +39,7 @@ public class Tag implements Serializable {
     @Size(max = 45)
     @Column(name = "tagcol")
     private String tagcol;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tag")
     private Set<ProdTag> prodTags;
 
